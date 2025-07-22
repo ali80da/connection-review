@@ -1,0 +1,6 @@
+@Check.Web_HostAddress = http://localhost:5248
+
+GET {{Check.Web_HostAddress}}/review-time/
+Accept: application/json
+
+###
