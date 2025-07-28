@@ -9,6 +9,8 @@ public class ProtocolData
     public string Link { get; set; } = string.Empty;
 
     public string? Protocol { get; set; }
+
+    public bool ForceRefresh { get; set; } = false;
 }
 
 public class ConfigDetails

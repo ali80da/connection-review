@@ -48,6 +48,23 @@ public class ProtocolController : SharedController
     }
 
 
+    [HttpPost("review-time2")]
+    public async Task<IActionResult> ReviewTime([FromBody] ProtocolData data)
+    {
+        Logger.LogInformation("Received review-time request with ForceRefresh={ForceRefresh}", data.ForceRefresh);
+        var result = await ReviewService.AnalyzeAsync(data);
+
+        if (result.Success && !data.ForceRefresh)
+        {
+            Response.Headers.Append("Cache-Control", "max-age=300");
+        }
+        else
+        {
+            Response.Headers.Append("Cache-Control", "no-cache");
+        }
+        return Ok(result);
+    }
+
 
 
 

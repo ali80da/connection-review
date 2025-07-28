@@ -56,6 +56,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddMemoryCache();
 
 
+
     // Register services as Singleton
     builder.Services.AddScoped<IConnectionReview, ConnectionReview>();
     builder.Services.AddScoped<VlessProtocolParser>();
@@ -87,7 +88,7 @@ var app = builder.Build();
         app.UseSwagger();
         app.UseSwaggerUI();
     }
-    
+
     app.UseExceptionHandler(errorApp =>
     {
         errorApp.Run(async context =>
@@ -111,9 +112,9 @@ var app = builder.Build();
     app.UseHttpsRedirection();
     app.UseRouting();
 
+
     app.UseAuthentication();
     app.UseAuthorization();
-
 
 
     app.MapControllers();
