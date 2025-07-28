@@ -3,7 +3,10 @@ using System.Text.Json.Serialization;
 using Check.Core.Services.Behind;
 using Check.Core.Services.CheckConnection;
 using Check.Core.Services.Protocol;
+using Check.Web.Utilities.Routes;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +15,10 @@ var builder = WebApplication.CreateBuilder(args);
 
     // Add services to the container.
 
-    builder.Services.AddControllers().AddJsonOptions(options =>
+    builder.Services.AddControllers(opt =>
+    {
+        opt.Conventions.Add(new RouteTokenTransformerConvention(new LowercaseTransformer()));
+    }).AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         options.JsonSerializerOptions.WriteIndented = true;
