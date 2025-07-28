@@ -1,33 +1,42 @@
-﻿using System.Collections.Generic;
+﻿using System.Text.Json.Serialization;
 
-namespace Check.Core.Models.Common;
-
-public class ReportStep
+namespace Check.Core.Models.Common
 {
-    public string Step { get; set; } = string.Empty;
-    public string Details { get; set; } = string.Empty;
-    public bool IsSuccess { get; set; }
-}
-
-public class ResultStatus
-{
-    public bool Success { get; set; }
-    public int? LatencyMs { get; set; }
-    public bool IsSecure { get; set; }
-    //public double? DownloadSpeedMbps { get; set; }
-    //public double? UploadSpeedMbps { get; set; }
-    public List<ReportStep> Steps { get; set; } = new List<ReportStep>();
-    //public string Summary => Success
-    //    ? $"Connection successful with latency {LatencyMs}ms, download speed {DownloadSpeedMbps:F2} Mbps, upload speed {UploadSpeedMbps:F2} Mbps. {(IsSecure ? "Secure" : "Insecure")}."
-    //    : "Connection failed. Check steps for details.";
-    public string Summary => Success
-        ? $"Connection successful . {(IsSecure ? "Secure" : "Insecure")}."
-        : "Connection failed. Check steps for details.";
-
-    public void AddStep(string step, string details, bool isSuccess = true)
+    public class ResultStatus
     {
-        Steps.Add(new ReportStep { Step = step, Details = details, IsSuccess = isSuccess });
+        [JsonPropertyName("success")]
+        public bool Success { get; set; }
+
+        [JsonPropertyName("latencyMs")]
+        public int? LatencyMs { get; set; }
+
+        [JsonPropertyName("isSecure")]
+        public bool IsSecure { get; set; }
+
+        [JsonPropertyName("steps")]
+        public List<Step> Steps { get; set; } = new List<Step>();
+
+        [JsonPropertyName("summary")]
+        public string Summary { get; set; } = string.Empty;
+
+        public void AddStep(string step, string message, bool success = true, string? code = null)
+        {
+            Steps.Add(new Step { Name = step, Message = message, Success = success, Code = code });
+        }
+    }
+
+    public class Step
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; set; } = string.Empty;
+
+        [JsonPropertyName("message")]
+        public string Message { get; set; } = string.Empty;
+
+        [JsonPropertyName("success")]
+        public bool Success { get; set; }
+
+        [JsonPropertyName("code")]
+        public string? Code { get; set; }
     }
 }
-
-

@@ -1,9 +1,13 @@
-﻿namespace Check.Core.Models.Receive;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Check.Core.Models.Receive;
 
 
 public class ProtocolData
 {
+    [Required(ErrorMessage = "Link is required")]
     public string Link { get; set; } = string.Empty;
+
     public string? Protocol { get; set; }
 }
 
